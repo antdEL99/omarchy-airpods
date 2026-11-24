@@ -181,6 +181,8 @@ def serve() -> None:
                     packet = command(msg)
                     if packet and link is not None:
                         try:
+                            if packet == protocol.mode_packet("off"):
+                                link.send(protocol.ALLOW_OFF)
                             link.send(packet)
                         except OSError:
                             try:

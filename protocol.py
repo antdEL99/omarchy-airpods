@@ -7,6 +7,8 @@ FEATURES = bytes.fromhex("040004004d00d700000000000000")
 NOTIFICATIONS = bytes.fromhex("040004000f00ffffffff")
 MODES = {"off": 1, "anc": 2, "transparency": 3, "adaptive": 4}
 MAX_PACKET = 1024
+# Impostazione 0x34 "consenti Spento" = attiva: senza, le cuffie ignorano la modalità Spento.
+ALLOW_OFF = bytes.fromhex("0400040009003401000000")
 
 _COMPONENTS = {0x04: "left", 0x02: "right", 0x08: "case"}
 _STATES = {0x01: True, 0x02: False, 0x04: None, 0x00: None}
