@@ -19,7 +19,7 @@ Panel {
   property var battery: ({})
   property int cursorIndex: 0
   property bool cursorActive: false
-  readonly property var modes: ["anc", "transparency", "adaptive"]
+  readonly property var modes: ["anc", "transparency", "adaptive", "off"]
   readonly property color fg: root.bar ? root.bar.foreground : Commons.Color.foreground
   readonly property string ff: root.bar ? root.bar.fontFamily : Style.font.family
   function lvl(k) { return batteryEntry(k).level }
@@ -159,7 +159,7 @@ Panel {
       onMoveRequested: function(dx, dy) {
         if (!root.cursorActive) { root.cursorActive = true; return }
         var d = dy !== 0 ? dy : dx
-        root.cursorIndex = Math.max(0, Math.min(2, root.cursorIndex + d))
+        root.cursorIndex = Math.max(0, Math.min(root.modes.length - 1, root.cursorIndex + d))
       }
       onActivateRequested: if (root.cursorActive) root.sendMode(root.modes[root.cursorIndex])
       onCloseRequested: root.close()

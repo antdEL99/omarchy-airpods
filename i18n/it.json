@@ -11,5 +11,7 @@
   "mode.adaptive": "Adattiva",
   "short.anc": "Anti-rumore",
   "short.transparency": "Trasparenza",
-  "short.adaptive": "Adattiva"
+  "short.adaptive": "Adattiva",
+  "mode.off": "Spento",
+  "short.off": "Spento"
 }

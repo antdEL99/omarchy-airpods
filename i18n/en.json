@@ -11,5 +11,7 @@
   "mode.adaptive": "Adaptive",
   "short.anc": "Noise cancel.",
   "short.transparency": "Transparency",
-  "short.adaptive": "Adaptive"
+  "short.adaptive": "Adaptive",
+  "mode.off": "Off",
+  "short.off": "Off"
 }

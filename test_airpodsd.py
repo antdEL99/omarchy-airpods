@@ -94,7 +94,7 @@ class AirPodsTest(unittest.TestCase):
                              protocol.mode_packet(name))
 
     def test_command_rejected(self):
-        self.assertIsNone(airpodsd.command(b"off"))
+        self.assertIsNone(airpodsd.command(b"xyz"))
         self.assertIsNone(airpodsd.command(b""))
         self.assertIsNone(airpodsd.command(b"\xff"))
         self.assertIsNone(airpodsd.command(b"anc;rm"))
@@ -102,7 +102,7 @@ class AirPodsTest(unittest.TestCase):
     # ---- send_mode ----
 
     def test_send_mode_disallowed(self):
-        self.assertEqual(airpodsd.send_mode("off"), 2)
+        self.assertEqual(airpodsd.send_mode("xyz"), 2)
 
     def test_send_mode_no_socket(self):
         self.assertEqual(airpodsd.send_mode("anc"), 1)

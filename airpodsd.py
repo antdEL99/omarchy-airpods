@@ -15,7 +15,7 @@ from pathlib import Path
 import protocol
 import bluez
 
-ALLOWED = ("anc", "transparency", "adaptive")
+ALLOWED = ("anc", "transparency", "adaptive", "off")
 
 
 def runtime_dir() -> Path:
