@@ -7,7 +7,7 @@ After=bluetooth.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 -I -B %h/.config/omarchy/plugins/antdel.airpods/airpodsd.py run
+ExecStart=/usr/bin/python3 -E -s -B %h/.config/omarchy/plugins/antdel.airpods/airpodsd.py run
 Restart=on-failure
 RestartSec=10
 RuntimeDirectory=airpods

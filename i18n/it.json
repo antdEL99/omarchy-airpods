@@ -1,0 +1,12 @@
+{
+  "status.off": "Servizio AirPods non attivo",
+  "status.disconnected": "Non collegate",
+  "status.connected": "Collegate",
+  "battery.left": "Sinistra",
+  "battery.right": "Destra",
+  "battery.case": "Custodia",
+  "charging": "in carica",
+  "mode.anc": "Cancellazione rumore",
+  "mode.transparency": "Trasparenza",
+  "mode.adaptive": "Adattiva"
+}

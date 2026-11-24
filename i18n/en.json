@@ -1,0 +1,12 @@
+{
+  "status.off": "AirPods service not running",
+  "status.disconnected": "Not connected",
+  "status.connected": "Connected",
+  "battery.left": "Left",
+  "battery.right": "Right",
+  "battery.case": "Case",
+  "charging": "charging",
+  "mode.anc": "Noise cancellation",
+  "mode.transparency": "Transparency",
+  "mode.adaptive": "Adaptive"
+}

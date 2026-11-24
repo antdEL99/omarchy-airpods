@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "antdel.airpods",
+  "name": "AirPods Pro 3",
+  "version": "1.0.0",
+  "author": "antdel",
+  "license": "GPL-3.0-or-later",
+  "description": "Batteria e modalità di ascolto delle AirPods Pro 3",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "AirPods Pro 3",
+    "description": "Batteria e controllo del rumore",
+    "category": "Audio",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
