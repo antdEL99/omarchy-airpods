@@ -30,7 +30,7 @@ Tests: `python3 -m unittest`.
 - Tested with AirPods Pro 3 (A3063). Other AirPods that speak the same protocol may partly work.
 - "Off" works only after the earbuds' "allow off" setting is enabled; the service sends that setting before switching to Off.
 - Protocol values come from the [LibrePods](https://github.com/librepods-org/librepods) documentation (`docs/`). No LibrePods code is included.
-- Icon: [MingCute](https://github.com/Richard9394/MingCute) `airpods-fill`, Apache-2.0 (see `LICENSE-MingCute-Apache-2.0`).
+- Icon: [MingCute](https://github.com/mingcute-design/mingcute-icons) `airpods-fill`, Apache-2.0 (see `LICENSE-MingCute-Apache-2.0`).
 
 ## License
 
