@@ -1,0 +1,29 @@
+# Unità systemd utente per il plugin antdel.airpods: avvia airpodsd.py,
+# che gestisce il servizio Bluetooth (socket L2CAP e Unix locale) per le
+# AirPods Pro 3 nella barra di Omarchy.
+[Unit]
+Description=AirPods Pro 3 per la barra di Omarchy
+After=bluetooth.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -I -B %h/.config/omarchy/plugins/antdel.airpods/airpodsd.py run
+Restart=on-failure
+RestartSec=10
+RuntimeDirectory=airpods
+RuntimeDirectoryMode=0700
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+RestrictAddressFamilies=AF_UNIX AF_BLUETOOTH
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+UMask=0077
+
+[Install]
+WantedBy=default.target

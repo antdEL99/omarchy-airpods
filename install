@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+src="$(cd "$(dirname "$0")" && pwd)"
+dest="$HOME/.config/omarchy/plugins/antdel.airpods"
+unit="$HOME/.config/systemd/user"
+
+if [ -L "$dest" ]; then
+    rm "$dest"
+fi
+
+mkdir -p "$dest/i18n" "$unit"
+
+for f in airpodsd.py protocol.py bluez.py Panel.qml manifest.json; do
+    install -m 0644 "$src/$f" "$dest/$f"
+done
+
+for f in "$src"/i18n/*.json; do
+    install -m 0644 "$f" "$dest/i18n/$(basename "$f")"
+done
+
+install -m 0644 "$src/airpods.service" "$unit/antdel-airpods.service"
+
+rm -rf "$dest/__pycache__"
+
+systemctl --user daemon-reload
+systemctl --user enable antdel-airpods.service
+systemctl --user restart antdel-airpods.service
+
+echo "Installato. Stato: $(systemctl --user is-active antdel-airpods.service || true)"
