@@ -8,5 +8,8 @@
   "charging": "in carica",
   "mode.anc": "Cancellazione rumore",
   "mode.transparency": "Trasparenza",
-  "mode.adaptive": "Adattiva"
+  "mode.adaptive": "Adattiva",
+  "short.anc": "Anti-rumore",
+  "short.transparency": "Trasparenza",
+  "short.adaptive": "Adattiva"
 }

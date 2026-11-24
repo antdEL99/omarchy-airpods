@@ -20,6 +20,11 @@ Panel {
   property int cursorIndex: 0
   property bool cursorActive: false
   readonly property var modes: ["anc", "transparency", "adaptive"]
+  readonly property color fg: root.bar ? root.bar.foreground : Commons.Color.foreground
+  readonly property string ff: root.bar ? root.bar.fontFamily : Style.font.family
+  function lvl(k) { return batteryEntry(k).level }
+  function statusText() { return !running ? strings.t("status.off") : !connected ? strings.t("status.disconnected") : strings.t("status.connected") }
+
 
   Commons.Translations {
     id: strings
@@ -100,8 +105,11 @@ Panel {
 
   // Icona: MingCute airpods-fill, Apache-2.0
   component IconView: Item {
-    width: Style.bar.iconSize
-    height: Style.bar.iconSize
+    id: iconRoot
+    property real size: Style.bar.iconSize
+    property color tint: root.barForeground
+    width: size
+    height: size
     Item {
       width: 24
       height: 24
@@ -110,7 +118,7 @@ Panel {
       Shape {
         anchors.fill: parent
         ShapePath {
-          fillColor: root.barForeground
+          fillColor: iconRoot.tint
           strokeWidth: -1
           PathSvg {
             path: "M17 12.973V18c-.05 1.23-1.069 2.178-2.324 1.974a2.01 2.01 0 0 1-1.574-1.342A2 2 0 0 1 13 18V8.5c.072-2.687 2.265-4.768 4.99-4.474a4.5 4.5 0 0 1 2.525 1.133a4.52 4.52 0 0 1 1.459 2.851c.243 2.255-1.289 4.402-3.509 4.886c-.493.108-.964.104-1.465.077m-10 0c-.662.036-1.286.009-1.922-.202c-2.158-.718-3.459-3.016-2.974-5.236a4.5 4.5 0 0 1 1.381-2.376A4.5 4.5 0 0 1 6.01 4.026C8.735 3.732 10.928 5.813 11 8.5V18a2 2 0 0 1-.819 1.614C8.825 20.608 7.065 19.624 7 18Z"
@@ -164,85 +172,62 @@ Panel {
         anchors.top: parent.top
         spacing: Style.space(12)
 
-        Text {
-          text: "AirPods Pro 3"
-          textFormat: Text.PlainText
-          color: root.bar ? root.bar.foreground : "white"
-          font.family: root.bar ? root.bar.fontFamily : undefined
-          font.pixelSize: Style.font.title
-          font.bold: true
-          width: parent.width
-        }
-
-        Text {
-          text: !root.running ? strings.t("status.off")
-              : !root.connected ? strings.t("status.disconnected")
-              : strings.t("status.connected")
-          textFormat: Text.PlainText
-          color: {
-            var c = root.bar ? root.bar.foreground : Commons.Color.foreground
-            return Qt.rgba(c.r, c.g, c.b, 0.6)
-          }
-          font.family: root.bar ? root.bar.fontFamily : undefined
-          font.pixelSize: Style.font.caption
-          width: parent.width
-        }
-
-        PanelSeparator {
-          width: parent.width
-          foreground: root.bar ? root.bar.foreground : "white"
-        }
-
         Item {
-          width: parent.width
-          implicitHeight: leftName.implicitHeight
-          Label { id: leftName; text: strings.t("battery.left"); opacity: 0.6 }
-          Label { text: root.batteryText("left"); anchors.right: parent.right }
+          width: column.width
+          implicitHeight: titleL.implicitHeight
+          Label { id: titleL; text: "AirPods Pro 3"; font.bold: true; font.pixelSize: Style.font.title }
+          Label { text: root.statusText(); opacity: 0.6; anchors.right: parent.right; anchors.baseline: titleL.baseline }
         }
-        Item {
-          width: parent.width
-          implicitHeight: rightName.implicitHeight
-          Label { id: rightName; text: strings.t("battery.right"); opacity: 0.6 }
-          Label { text: root.batteryText("right"); anchors.right: parent.right }
-        }
-        Item {
-          width: parent.width
-          implicitHeight: caseName.implicitHeight
-          Label { id: caseName; text: strings.t("battery.case"); opacity: 0.6 }
-          Label { text: root.batteryText("case"); anchors.right: parent.right }
-        }
-
-        PanelSeparator {
-          width: parent.width
-          foreground: root.bar ? root.bar.foreground : "white"
-        }
-
         Row {
-          width: parent.width
-          spacing: Style.space(6)
-          Button {
-            text: strings.t("mode.anc")
-            selected: root.mode === "anc"
-            hasCursor: root.cursorActive && root.cursorIndex === 0
-            enabled: root.connected && !setProc.running
-            opacity: enabled ? 1 : 0.45
-            onClicked: root.sendMode("anc")
+          id: cells
+          width: column.width
+          spacing: Style.space(10)
+          Repeater {
+            model: ["left", "right", "case"]
+            delegate: Column {
+              required property string modelData
+              width: (cells.width - cells.spacing * 2) / 3
+              spacing: Style.space(4)
+              Label {
+                text: root.lvl(modelData) < 0 ? "—" : Commons.I18n.formatNumber(root.lvl(modelData)) + "%"
+                font.pixelSize: Style.font.display
+                font.bold: true
+              }
+              Rectangle {
+                width: parent.width; height: Style.space(3); radius: height / 2
+                color: Qt.rgba(root.fg.r, root.fg.g, root.fg.b, 0.15)
+                Rectangle {
+                  width: parent.width * Math.max(0, root.lvl(modelData)) / 100; height: parent.height; radius: parent.radius
+                  color: root.batteryEntry(modelData).charging === true ? Commons.Color.accent : root.fg
+                }
+              }
+              Label {
+                text: strings.t("battery." + modelData) + (root.batteryEntry(modelData).charging === true ? " · " + strings.t("charging") : "")
+                opacity: 0.6
+                font.pixelSize: Style.font.caption
+                width: parent.width
+                elide: Text.ElideRight
+              }
+            }
           }
-          Button {
-            text: strings.t("mode.transparency")
-            selected: root.mode === "transparency"
-            hasCursor: root.cursorActive && root.cursorIndex === 1
+        }
+        PanelSeparator { foreground: root.fg }
+        Repeater {
+          model: root.modes
+          delegate: Button {
+            required property string modelData
+            required property int index
+            width: column.width
+            leftAlign: true
+            text: strings.t("mode." + modelData)
+            selected: root.mode === modelData
+            hasCursor: root.cursorActive && root.cursorIndex === index
+            foreground: root.fg
+            fontFamily: root.ff
             enabled: root.connected && !setProc.running
             opacity: enabled ? 1 : 0.45
-            onClicked: root.sendMode("transparency")
-          }
-          Button {
-            text: strings.t("mode.adaptive")
-            selected: root.mode === "adaptive"
-            hasCursor: root.cursorActive && root.cursorIndex === 2
-            enabled: root.connected && !setProc.running
-            opacity: enabled ? 1 : 0.45
-            onClicked: root.sendMode("adaptive")
+            onHovered: function(on) { if (on) { root.cursorActive = true; root.cursorIndex = index } }
+            onClicked: root.sendMode(modelData)
           }
         }
       }

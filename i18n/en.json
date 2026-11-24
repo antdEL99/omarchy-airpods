@@ -8,5 +8,8 @@
   "charging": "charging",
   "mode.anc": "Noise cancellation",
   "mode.transparency": "Transparency",
-  "mode.adaptive": "Adaptive"
+  "mode.adaptive": "Adaptive",
+  "short.anc": "Noise cancel.",
+  "short.transparency": "Transparency",
+  "short.adaptive": "Adaptive"
 }
